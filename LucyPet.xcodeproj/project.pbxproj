@@ -12,8 +12,10 @@
 		424709E71E6F1DCD0034CE59 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 424709E61E6F1DCD0034CE59 /* Assets.xcassets */; };
 		424709EA1E6F1DCD0034CE59 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 424709E81E6F1DCD0034CE59 /* LaunchScreen.storyboard */; };
 		424709F21E6F28F20034CE59 /* ActivityTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424709F11E6F28F20034CE59 /* ActivityTableViewController.swift */; };
-		424709F41E6F34DD0034CE59 /* NewEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424709F31E6F34DD0034CE59 /* NewEventViewController.swift */; };
-		424709F61E6F35040034CE59 /* MyPetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424709F51E6F35040034CE59 /* MyPetsViewController.swift */; };
+		424709FA1E6F42840034CE59 /* YourPetsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424709F91E6F42840034CE59 /* YourPetsCollectionViewController.swift */; };
+		424709FC1E6F42E20034CE59 /* NewEventTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424709FB1E6F42E20034CE59 /* NewEventTableViewController.swift */; };
+		424709FE1E6F55B40034CE59 /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424709FD1E6F55B40034CE59 /* Pet.swift */; };
+		42470A001E6F650F0034CE59 /* NewPetTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424709FF1E6F650F0034CE59 /* NewPetTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,8 +26,10 @@
 		424709E91E6F1DCD0034CE59 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		424709EB1E6F1DCD0034CE59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		424709F11E6F28F20034CE59 /* ActivityTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityTableViewController.swift; sourceTree = "<group>"; };
-		424709F31E6F34DD0034CE59 /* NewEventViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewEventViewController.swift; sourceTree = "<group>"; };
-		424709F51E6F35040034CE59 /* MyPetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPetsViewController.swift; sourceTree = "<group>"; };
+		424709F91E6F42840034CE59 /* YourPetsCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YourPetsCollectionViewController.swift; sourceTree = "<group>"; };
+		424709FB1E6F42E20034CE59 /* NewEventTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewEventTableViewController.swift; sourceTree = "<group>"; };
+		424709FD1E6F55B40034CE59 /* Pet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pet.swift; sourceTree = "<group>"; };
+		424709FF1E6F650F0034CE59 /* NewPetTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPetTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,13 +63,15 @@
 			isa = PBXGroup;
 			children = (
 				424709DD1E6F1DCD0034CE59 /* AppDelegate.swift */,
-				424709F31E6F34DD0034CE59 /* NewEventViewController.swift */,
 				424709E31E6F1DCD0034CE59 /* Main.storyboard */,
 				424709E61E6F1DCD0034CE59 /* Assets.xcassets */,
 				424709E81E6F1DCD0034CE59 /* LaunchScreen.storyboard */,
 				424709EB1E6F1DCD0034CE59 /* Info.plist */,
 				424709F11E6F28F20034CE59 /* ActivityTableViewController.swift */,
-				424709F51E6F35040034CE59 /* MyPetsViewController.swift */,
+				424709F91E6F42840034CE59 /* YourPetsCollectionViewController.swift */,
+				424709FB1E6F42E20034CE59 /* NewEventTableViewController.swift */,
+				424709FD1E6F55B40034CE59 /* Pet.swift */,
+				424709FF1E6F650F0034CE59 /* NewPetTableViewController.swift */,
 			);
 			path = LucyPet;
 			sourceTree = "<group>";
@@ -142,10 +148,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42470A001E6F650F0034CE59 /* NewPetTableViewController.swift in Sources */,
+				424709FE1E6F55B40034CE59 /* Pet.swift in Sources */,
 				424709DE1E6F1DCD0034CE59 /* AppDelegate.swift in Sources */,
-				424709F41E6F34DD0034CE59 /* NewEventViewController.swift in Sources */,
-				424709F61E6F35040034CE59 /* MyPetsViewController.swift in Sources */,
+				424709FC1E6F42E20034CE59 /* NewEventTableViewController.swift in Sources */,
 				424709F21E6F28F20034CE59 /* ActivityTableViewController.swift in Sources */,
+				424709FA1E6F42840034CE59 /* YourPetsCollectionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
