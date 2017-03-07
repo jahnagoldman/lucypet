@@ -16,6 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        // - Attribution: http://stackoverflow.com/questions/24687238/changing-navigation-bar-color-in-swift
+        // - Attribution: http://uicolor.xyz/#/hex-to-ui
+        // - Attribution: http://www.colorpicker.com/a1d490
+//        UINavigationBar.appearance().isOpaque = true
+//        UINavigationBar.appearance().is
+//        UINavigationBar.appearance().backgroundColor = UIColor(red:0.37, green:0.73, blue:0.37, alpha:1.0)
+        
         return true
     }
 
