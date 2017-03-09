@@ -8,9 +8,11 @@
 
 import UIKit
 
-private let reuseIdentifier = "Cell"
+private let reuseIdentifier = "petCell"
 
 class YourPetsCollectionViewController: UICollectionViewController {
+    
+    var pets: [Pet] = [Pet]()
 
     // button to add a new pet, in nav bar
     @IBOutlet weak var newPetButton: UIBarButtonItem!
@@ -22,7 +24,7 @@ class YourPetsCollectionViewController: UICollectionViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+//        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
     }
@@ -52,15 +54,30 @@ class YourPetsCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 0
+        return pets.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-    
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! YourPetViewCell
+        
         // Configure the cell
+        cell.nameLabel.text = pets[indexPath.row].name
     
         return cell
+    }
+    
+    @IBAction func cancelToPetsViewController(segue:UIStoryboardSegue) {
+        
+    }
+    
+    @IBAction func savePetDetail(segue:UIStoryboardSegue) {
+        if let newPetViewController = segue.source as? NewPetTableViewController {
+            if let pet = newPetViewController.pet {
+                pets.append(pet)
+                collectionView?.reloadData()
+                print(pet.name)
+            }
+        }
     }
 
     // MARK: UICollectionViewDelegate
