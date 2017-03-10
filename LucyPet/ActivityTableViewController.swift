@@ -13,6 +13,8 @@ class ActivityTableViewCell: UITableViewCell {
 }
 
 class ActivityTableViewController: UITableViewController {
+    
+    var activities: [Activity] = [Activity]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,18 +30,34 @@ class ActivityTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    @IBAction func cancelToActivityViewController(segue:UIStoryboardSegue) {
+        
+    }
+    
+    @IBAction func saveActivityDetail(segue:UIStoryboardSegue) {
+        if let newActivityViewController = segue.source as? NewActivityTableViewController {
+            if let activity = newActivityViewController.activity {
+                activities.append(activity)
+                let encodedData = NSKeyedArchiver.archivedData(withRootObject: activities)
+                UserDefaults.standard.set(encodedData, forKey: "pets")
+                tableView?.reloadData()
+            }
+        }
+    }
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
+//    override func numberOfSections(in tableView: UITableView) -> Int {
+//        // #warning Incomplete implementation, return the number of sections
+//        return 0
+//    }
+//
+//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        // #warning Incomplete implementation, return the number of rows
+//        return 0
+//    }
 
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

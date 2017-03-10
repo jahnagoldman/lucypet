@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewPetTableViewController: UITableViewController {
+class NewPetTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var petNameField: UITextField!
     
@@ -25,13 +25,18 @@ class NewPetTableViewController: UITableViewController {
         }
     }
     var pet: Pet?
+    var image: UIImage = #imageLiteral(resourceName: "Dog Footprint-26")
     @IBOutlet weak var doneButton: UIBarButtonItem!
+    
+    @IBOutlet weak var petImageView: UIImageView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         birthDatePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
         // only month, day, year and no time shown - ideal for birthday picking
         birthDatePicker.datePickerMode = .date
+        petImageView.image = image
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -145,11 +150,78 @@ class NewPetTableViewController: UITableViewController {
             else {
                 anim = Pet.Animal.other
             }
-            pet = Pet(name: petNameField.text!, birthday: birthDatePicker.date as NSDate, animal: anim, microChipNumber: microChipField.text!)
+            pet = Pet(name: petNameField.text!, birthday: birthDatePicker.date as NSDate, animal: anim, microChipNumber: microChipField.text!, image: self.image)
             
             
         }
     }
     
+    @IBAction func pickPhoto(_ sender: Any) {
+        
+        let alertController = UIAlertController(title: nil, message: "Would you like to select an image from your Camera Roll or take a new photo with your camera?", preferredStyle: .actionSheet)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            // ...
+        }
+        alertController.addAction(cancelAction)
+        
+        let cameraRoll = UIAlertAction(title: "Select from Camera Roll", style: .default) { (action) in
+            let imagePickerController = UIImagePickerController()
+            /* Only allow photos to be picked, not taken. This sets the image picker controller's source (where it can get pictures) */
+            imagePickerController.sourceType = .photoLibrary
+            // Make sure ViewController is notified when the user picks an image.
+            imagePickerController.delegate = self
+            self.present(imagePickerController, animated: true, completion: nil)
+        }
+        alertController.addAction(cameraRoll)
+        
+        let newPhoto = UIAlertAction(title: "Take new Photo", style: .default) { (action) in
+            if UIImagePickerController.availableCaptureModes(for: .rear) != nil {
+                let picker = UIImagePickerController()
+                picker.allowsEditing = false
+                picker.sourceType = UIImagePickerControllerSourceType.camera
+                picker.cameraCaptureMode = .photo
+                self.present(picker, animated: true, completion: nil)
+            } else {
+                let alertVC = UIAlertController(
+                    title: "No Camera",
+                    message: "Sorry, this device has no camera",
+                    preferredStyle: .alert)
+                let okAction = UIAlertAction(
+                    title: "OK",
+                    style:.default,
+                    handler: nil)
+                alertVC.addAction(okAction)
+                self.present(alertVC,
+                             animated: true,
+                             completion: nil)
+            }
+        }
+        // - Attribution: http://stackoverflow.com/questions/25759885/uiactionsheet-from-popover-with-ios8-gm
+        // compatible with iPad
+        alertController.addAction(newPhoto)
+        alertController.popoverPresentationController?.sourceView = self.view
+        //alertController.popoverPresentationController?.sourceRect = self.view.bounds
+        
+        self.present(alertController, animated: true) {
+            // ...
+        }
+    }
+    
+        
+        // MARK: - UIImagePickerControllerDelegate Methods
+        
+        // - Attribution: http://stackoverflow.com/questions/39009889/xcode-8-creating-an-image-format-with-an-unknown-type-is-an-error
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+            let image = info[UIImagePickerControllerOriginalImage] as! UIImage!
+            self.image = image!
+            petImageView.image = self.image
+            //self.tableView.reloadData()
+            dismiss(animated: true, completion: nil)
+            
+        }
 
-}
+    }
+    
+    
+

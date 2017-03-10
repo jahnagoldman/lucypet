@@ -19,6 +19,10 @@ class YourPetsCollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        pets.removeAll()
+        if let data = UserDefaults.standard.data(forKey:"pets"), let myPetList = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Pet] {
+            myPetList.forEach({pets.append($0)})
+       }
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -59,9 +63,21 @@ class YourPetsCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! YourPetViewCell
-        
+        let thisPet = pets[indexPath.row]
+        var thisAnimal: String
+        if (thisPet.animal == .dog) {
+            thisAnimal = "Dog"
+        }
+        else if (thisPet.animal == .cat) {
+            thisAnimal = "Cat"
+        }
+        else {
+            thisAnimal = "Other"
+        }
+        let mytext = "Pet Name: " + thisPet.name + " Animal Type: " + thisAnimal + " Birthday: " + String(describing: thisPet.birthday) + " Microchip #: " + thisPet.microChipNumber
         // Configure the cell
-        cell.nameLabel.text = pets[indexPath.row].name
+        cell.petText.text = mytext
+        cell.petImageView.image = pets[indexPath.row].image
     
         return cell
     }
@@ -74,8 +90,9 @@ class YourPetsCollectionViewController: UICollectionViewController {
         if let newPetViewController = segue.source as? NewPetTableViewController {
             if let pet = newPetViewController.pet {
                 pets.append(pet)
+                let encodedData = NSKeyedArchiver.archivedData(withRootObject: pets)
+                UserDefaults.standard.set(encodedData, forKey: "pets")
                 collectionView?.reloadData()
-                print(pet.name)
             }
         }
     }
