@@ -13,9 +13,9 @@ class Pet: NSObject, NSCoding {
     var name: String
     var birthday: NSDate
     enum Animal: String {
-        case dog
-        case cat
-        case other
+        case Dog
+        case Cat
+        case Other
     }
     var animal: Pet.Animal
     var microChipNumber: String
@@ -34,13 +34,13 @@ class Pet: NSObject, NSCoding {
         self.name = (aDecoder.decodeObject(forKey: "name") as? String)!
         self.birthday = (aDecoder.decodeObject(forKey: "birthday") as? NSDate)!
         if (aDecoder.decodeObject(forKey: "animal") as? String! == "Dog") {
-            self.animal = Pet.Animal.dog as Pet.Animal
+            self.animal = Pet.Animal.Dog as Pet.Animal
         }
         else if (aDecoder.decodeObject(forKey: "animal") as? String! == "Cat") {
-            self.animal = Pet.Animal.cat as Pet.Animal
+            self.animal = Pet.Animal.Cat as Pet.Animal
         }
         else {
-            self.animal = Pet.Animal.other as Pet.Animal
+            self.animal = Pet.Animal.Other as Pet.Animal
         }
         self.microChipNumber = (aDecoder.decodeObject(forKey: "microChipNumber") as? String)!
         self.image = (aDecoder.decodeObject(forKey: "image") as? UIImage)!

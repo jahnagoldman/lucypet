@@ -23,6 +23,7 @@ class YourPetsCollectionViewController: UICollectionViewController {
         if let data = UserDefaults.standard.data(forKey:"pets"), let myPetList = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Pet] {
             myPetList.forEach({pets.append($0)})
        }
+        collectionView?.delegate = self
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -38,15 +39,34 @@ class YourPetsCollectionViewController: UICollectionViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
+        
+        if (segue.identifier == "detailSegue") {
+            let secondVC = segue.destination as! PetDetailViewController
+            let cell = sender as! YourPetViewCell
+            let path = self.collectionView?.indexPath(for: cell)
+            secondVC.pet = pets[(path?.row)!]
+            secondVC.index = path?.row
+//            secondVC.petImageView.image = cell.petImageView.image
+//            var date: String
+//            let components = Calendar.current.dateComponents([.year, .month, .day], from: cell.pet?.birthday as! Date)
+//            if let day = components.day, let month = components.month, let year = components.year {
+//                date = "\(day)/\(month)/\(year)"
+//                
+//            }
+//            secondVC.petDescription.text = "Name: "cell.pet.name + " Animal: " + cell.pet.animal.rawValue +  " Birthday: " + date + " Microchip #: " + cell.pet.microChipNumber
+            
+            
+            
+        }
     }
-    */
+    
 
     // MARK: UICollectionViewDataSource
 
@@ -64,22 +84,28 @@ class YourPetsCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! YourPetViewCell
         let thisPet = pets[indexPath.row]
-        var thisAnimal: String
-        if (thisPet.animal == .dog) {
-            thisAnimal = "Dog"
-        }
-        else if (thisPet.animal == .cat) {
-            thisAnimal = "Cat"
-        }
-        else {
-            thisAnimal = "Other"
-        }
-        let mytext = "Pet Name: " + thisPet.name + " Animal Type: " + thisAnimal + " Birthday: " + String(describing: thisPet.birthday) + " Microchip #: " + thisPet.microChipNumber
+       
         // Configure the cell
-        cell.petText.text = mytext
-        cell.petImageView.image = pets[indexPath.row].image
+        cell.nameLabel.text = thisPet.name
+        cell.petImageView.image = thisPet.image
+        
+        let cSelector = Selector("reset:")
+        let UpSwipe = UISwipeGestureRecognizer(target: self, action: cSelector)
+        UpSwipe.direction = UISwipeGestureRecognizerDirection.up
+        cell.addGestureRecognizer(UpSwipe)
     
         return cell
+    }
+    
+    // - Attribution: http://stackoverflow.com/questions/29889353/swift-collectionview-remove-items-with-swipe-gesture
+    
+    func reset(sender: UISwipeGestureRecognizer) {
+        let cell = sender.view as! UICollectionViewCell
+        let i = collectionView?.indexPath(for: cell)!.item
+        pets.remove(at: i!)
+        let encodedData = NSKeyedArchiver.archivedData(withRootObject: pets)
+        UserDefaults.standard.set(encodedData, forKey: "pets")
+        self.collectionView?.reloadData()
     }
     
     @IBAction func cancelToPetsViewController(segue:UIStoryboardSegue) {
@@ -96,6 +122,28 @@ class YourPetsCollectionViewController: UICollectionViewController {
             }
         }
     }
+    
+    func didDismiss(withData: Int) {
+        print("Hello")
+        //do some funky stuff
+        pets.remove(at: withData)
+        print(withData)
+        let encodedData = NSKeyedArchiver.archivedData(withRootObject: pets)
+        UserDefaults.standard.set(encodedData, forKey: "pets")
+        collectionView?.reloadData()
+    }
+    
+    @IBAction func unwindToPetList(segue: UIStoryboardSegue) {
+        let sourceVC = segue.source as! PetDetailViewController
+        pets.remove(at: sourceVC.index!)
+        let encodedData = NSKeyedArchiver.archivedData(withRootObject: pets)
+        UserDefaults.standard.set(encodedData, forKey: "pets")
+        collectionView?.reloadData()
+        
+    }
+
+    
+
 
     // MARK: UICollectionViewDelegate
 

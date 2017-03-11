@@ -12,5 +12,7 @@ class YourPetViewCell: UICollectionViewCell {
 
     @IBOutlet weak var petImageView: UIImageView!
     
-    @IBOutlet weak var petText: UITextView!
+    @IBOutlet weak var nameLabel: UILabel!
+    
+    
 }

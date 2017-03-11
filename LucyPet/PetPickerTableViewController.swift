@@ -9,15 +9,33 @@
 import UIKit
 
 class PetPickerTableViewController: UITableViewController {
+    var pets:[String] = []
+    var selectedPet: String? {
+        didSet {
+            if let pet = selectedPet {
+                selectedPetIndex = pets.index(of: pet)!
+            }
+        }
+        
+    }
+    var selectedPetIndex: Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if let data = UserDefaults.standard.data(forKey:"pets"), let myPetList = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Pet] {
+            myPetList.forEach({pets.append($0.name)})
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,23 +47,43 @@ class PetPickerTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return pets.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "petCell", for: indexPath)
 
         // Configure the cell...
+        cell.textLabel?.text = pets[indexPath.row]
+        if indexPath.row == selectedPetIndex {
+            cell.accessoryType = .checkmark
+        }
+        else {
+            cell.accessoryType = .none
+        }
 
         return cell
     }
-    */
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        // other row is selected need to deselect
+        if let index = selectedPetIndex {
+            let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0))
+            cell?.accessoryType = .none
+        }
+        selectedPet = pets[indexPath.row]
+        // update checkmark for current row
+        let cell = tableView.cellForRow(at: indexPath)
+        cell?.accessoryType = .checkmark
+    }
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -82,14 +120,21 @@ class PetPickerTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "SaveSelectedPet" {
+            if let cell = sender as? UITableViewCell {
+                let indexPath = tableView.indexPath(for: cell)
+                if let index = indexPath?.row {
+                    selectedPet = pets[index]
+                }
+            }
+        }
     }
-    */
-
+    
 }

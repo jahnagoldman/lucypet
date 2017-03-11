@@ -10,6 +10,7 @@ import UIKit
 
 class NewPetTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
+    @IBOutlet weak var doneBarButton: UIBarButtonItem!
     @IBOutlet weak var petNameField: UITextField!
     
     @IBOutlet weak var microChipField: UITextField!
@@ -37,12 +38,32 @@ class NewPetTableViewController: UITableViewController, UIImagePickerControllerD
         // only month, day, year and no time shown - ideal for birthday picking
         birthDatePicker.datePickerMode = .date
         petImageView.image = image
+        doneBarButton.isEnabled = false
+        petNameField.addTarget(self, action: #selector(editingChanged(_:)), for: .editingChanged)
+        
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    // - Attribution: http://stackoverflow.com/questions/34941069/enable-a-button-in-swift-only-if-all-text-fields-have-been-filled-out
+    func editingChanged(_ textField: UITextField) {
+        if textField.text?.characters.count == 1 {
+            if textField.text?.characters.first == " " {
+                textField.text = ""
+                return
+            }
+        }
+        guard
+            let petName = petNameField.text, !petName.isEmpty
+            else {
+                doneBarButton.isEnabled = false
+                return
+        }
+        doneBarButton.isEnabled = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -142,13 +163,13 @@ class NewPetTableViewController: UITableViewController, UIImagePickerControllerD
         if segue.identifier == "SavePetDetail" {
             var anim: Pet.Animal
             if animal == "Dog" {
-                anim = Pet.Animal.dog
+                anim = Pet.Animal.Dog
             }
             else if animal == "Cat" {
-                anim = Pet.Animal.cat
+                anim = Pet.Animal.Cat
             }
             else {
-                anim = Pet.Animal.other
+                anim = Pet.Animal.Other
             }
             pet = Pet(name: petNameField.text!, birthday: birthDatePicker.date as NSDate, animal: anim, microChipNumber: microChipField.text!, image: self.image)
             

@@ -9,6 +9,15 @@
 import UIKit
 
 class ActivityTableViewCell: UITableViewCell {
+    @IBOutlet weak var commentLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var petNameLabel: UILabel!
+    
+    @IBOutlet weak var activityLabel: UILabel!
+    
+    @IBOutlet weak var activityImageView: UIImageView!
+    
+    
     
 }
 
@@ -18,6 +27,9 @@ class ActivityTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let data = UserDefaults.standard.data(forKey: "activities"), let myActivityList = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Activity] {
+            myActivityList.forEach({activities.append($0)})
+        }
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -41,7 +53,7 @@ class ActivityTableViewController: UITableViewController {
             if let activity = newActivityViewController.activity {
                 activities.append(activity)
                 let encodedData = NSKeyedArchiver.archivedData(withRootObject: activities)
-                UserDefaults.standard.set(encodedData, forKey: "pets")
+                UserDefaults.standard.set(encodedData, forKey: "activities")
                 tableView?.reloadData()
             }
         }
@@ -49,25 +61,50 @@ class ActivityTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        // #warning Incomplete implementation, return the number of sections
-//        return 0
-//    }
-//
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        // #warning Incomplete implementation, return the number of rows
-//        return 0
-//    }
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
 
-    /*
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return activities.count
+    }
+
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "activityCell", for: indexPath) as! ActivityTableViewCell
+        let thisActivity = activities[indexPath.row]
+        cell.petNameLabel.text = thisActivity.petName
+        cell.activityLabel.text = thisActivity.activityType.rawValue
+        let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: thisActivity.dateAndTime as Date)
+        if let day = components.day, let month = components.month, let year = components.year, let hour = components.hour, let minute = components.minute {
+            cell.dateLabel.text = "\(day)/\(month)/\(year) \(hour):\(minute)"
+            if (thisActivity.activityType == .Bathroom) {
+                cell.activityImageView.image = #imageLiteral(resourceName: "Toilet Bowl Filled-50")
+            }
+            else if (thisActivity.activityType == .Feeding) {
+                cell.activityImageView.image = #imageLiteral(resourceName: "Restaurant-50")
+            }
+            else if (thisActivity.activityType == .Medication) {
+                cell.activityImageView.image = #imageLiteral(resourceName: "Pill-50")
+            }
+            else if (thisActivity.activityType == .Walk) {
+                cell.activityImageView.image = #imageLiteral(resourceName: "Dog Leash-50")
+            }
+            else {
+                cell.activityImageView.image = #imageLiteral(resourceName: "Happy-50")
+            }
+        }
+        
+        cell.commentLabel.text = thisActivity.comments
 
-        // Configure the cell...
+         //Configure the cell...
+        
 
         return cell
     }
-    */
+ 
 
     /*
     // Override to support conditional editing of the table view.
@@ -77,17 +114,23 @@ class ActivityTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // Override to support editing the table view.
+    // - Attribution: https://www.hackingwithswift.com/example-code/uikit/how-to-swipe-to-delete-uitableviewcells
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
+            activities.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            let encodedData = NSKeyedArchiver.archivedData(withRootObject: activities)
+            UserDefaults.standard.set(encodedData, forKey: "activities")
+            tableView.reloadData()
+
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
+    
 
     /*
     // Override to support rearranging the table view.

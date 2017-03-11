@@ -10,20 +10,20 @@ import Foundation
 import UIKit
 
 class Activity: NSObject, NSCoding {
-    var pet: Pet
+    var petName: String
     var dateAndTime: NSDate
         enum ActivityType: String {
-        case bathroom
-        case medication
-        case feeding
-        case walk
-        case other
+        case Bathroom
+        case Medication
+        case Feeding
+        case Walk
+        case Other
     }
     var activityType: Activity.ActivityType
     var comments: String
     
-    init(pet: Pet, dateAndTime: NSDate, activityType: Activity.ActivityType, comments: String) {
-        self.pet = pet
+    init(petName: String, dateAndTime: NSDate, activityType: Activity.ActivityType, comments: String) {
+        self.petName = petName
         self.dateAndTime = dateAndTime
         self.activityType = activityType
         self.comments = comments
@@ -33,14 +33,14 @@ class Activity: NSObject, NSCoding {
         self.dateAndTime = (aDecoder.decodeObject(forKey: "dateAndTime") as? NSDate)!
         self.comments = (aDecoder.decodeObject(forKey: "comments") as? String)!
         self.activityType = Activity.ActivityType(rawValue: (aDecoder.decodeObject(forKey: "activityType") as? String)!)!
-        self.pet = (aDecoder.decodeObject(forKey: "pet") as? Pet)!
+        self.petName = (aDecoder.decodeObject(forKey: "petName") as? String)!
     }
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(self.dateAndTime, forKey: "dateAndTime")
         aCoder.encode(self.comments, forKey: "comments")
         aCoder.encode(self.activityType.rawValue, forKey: "activityType")
-        aCoder.encode(self.pet, forKey: "pet")
+        aCoder.encode(self.petName, forKey: "petName")
         
     }
 

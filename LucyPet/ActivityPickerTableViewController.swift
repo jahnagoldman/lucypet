@@ -9,6 +9,16 @@
 import UIKit
 
 class ActivityPickerTableViewController: UITableViewController {
+    
+    var activities:[String] = [ "Feeding", "Walk", "Bathroom", "Medication", "Other"]
+    var selectedActivity: String? {
+        didSet {
+            if let activity = selectedActivity {
+                selectedActivityIndex = activities.index(of: activity)!
+            }
+        }
+    }
+    var selectedActivityIndex:Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,23 +39,43 @@ class ActivityPickerTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return activities.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "activityTypeCell", for: indexPath)
 
         // Configure the cell...
+        cell.textLabel?.text = activities[indexPath.row]
+        if indexPath.row == selectedActivityIndex {
+            cell.accessoryType = .checkmark
+        }
+        else {
+            cell.accessoryType = .none
+        }
 
         return cell
     }
-    */
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        // other row is selected need to deselect
+        if let index = selectedActivityIndex {
+            let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0))
+            cell?.accessoryType = .none
+        }
+        selectedActivity = activities[indexPath.row]
+        // update checkmark for current row
+        let cell = tableView.cellForRow(at: indexPath)
+        cell?.accessoryType = .checkmark
+    }
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -82,14 +112,22 @@ class ActivityPickerTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "SaveSelectedActivity" {
+            if let cell = sender as? UITableViewCell {
+                let indexPath = tableView.indexPath(for: cell)
+                if let index = indexPath?.row {
+                    selectedActivity = activities[index]
+                }
+            }
+        }
     }
-    */
+    
 
 }
