@@ -6,6 +6,14 @@
 //  Copyright © 2017 Jahna Goldman. All rights reserved.
 //
 
+
+
+/* Custom Class Description:
+ 
+ A custom Pet class used to store pet profile data that is entered by the user into a Pet object
+ 
+ */
+
 import Foundation
 import UIKit
 
@@ -29,6 +37,7 @@ class Pet: NSObject, NSCoding {
         self.image = image
     }
     
+    // this function required to be able to decode and retrieve the object from UserDefaults
     // - Attribution: http://stackoverflow.com/questions/38607876/how-to-use-nsuserdefaults-to-store-an-array-of-custom-classes-in-swift
     required init?(coder aDecoder: NSCoder) {
         self.name = (aDecoder.decodeObject(forKey: "name") as? String)!
@@ -47,9 +56,11 @@ class Pet: NSObject, NSCoding {
         
     }
     
+    // this function is required to encode the custom object to be stored in UserDefaults
     func encode(with aCoder: NSCoder) {
         aCoder.encode(self.name, forKey: "name")
         aCoder.encode(self.birthday, forKey: "birthday")
+        // animal is an enum - store as a string - rawvalue
         aCoder.encode(self.animal.rawValue, forKey: "animal")
         aCoder.encode(self.microChipNumber, forKey: "microChipNumber")
         aCoder.encode(self.image, forKey: "image")

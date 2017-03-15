@@ -6,6 +6,12 @@
 //  Copyright © 2017 Jahna Goldman. All rights reserved.
 //
 
+/* Custom Class Description:
+ 
+ A custom TableViewController for the user to pick the activity type when adding a new pet activity - segue from NewActivityTableViewController leads to this page when the activity type cell is tapped
+ 
+ */
+
 import UIKit
 
 class ActivityPickerTableViewController: UITableViewController {
@@ -120,6 +126,7 @@ class ActivityPickerTableViewController: UITableViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "SaveSelectedActivity" {
+            // pass picked activity to the original view
             if let cell = sender as? UITableViewCell {
                 let indexPath = tableView.indexPath(for: cell)
                 if let index = indexPath?.row {

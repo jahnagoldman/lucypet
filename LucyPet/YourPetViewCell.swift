@@ -6,6 +6,13 @@
 //  Copyright © 2017 Jahna Goldman. All rights reserved.
 //
 
+
+/* Custom Class Description:
+ 
+ A custom UICollectionViewCell for the pet profile cell in the YourPetsCollectionViewController
+ 
+ */
+
 import UIKit
 
 class YourPetViewCell: UICollectionViewCell {

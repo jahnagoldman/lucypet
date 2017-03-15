@@ -6,6 +6,13 @@
 //  Copyright © 2017 Jahna Goldman. All rights reserved.
 //
 
+
+/* Custom Class Description:
+ 
+ A custom TableViewController with a static table for the user to add a new pet profile; acts as a form to submit the pet - includes pet name, birthday, animal type, as well as optional microchip # and photo using UIImagePickerController
+ 
+ */
+
 import UIKit
 
 class NewPetTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -26,10 +33,12 @@ class NewPetTableViewController: UITableViewController, UIImagePickerControllerD
         }
     }
     var pet: Pet?
-    var image: UIImage = #imageLiteral(resourceName: "Dog Footprint-26")
+    var image: UIImage = #imageLiteral(resourceName: "Cat Footprint Filled-100")
     @IBOutlet weak var doneButton: UIBarButtonItem!
     
     @IBOutlet weak var petImageView: UIImageView!
+    var datePicked: Bool?
+    var animalPicked: Bool?
     
     
     override func viewDidLoad() {
@@ -39,7 +48,10 @@ class NewPetTableViewController: UITableViewController, UIImagePickerControllerD
         birthDatePicker.datePickerMode = .date
         petImageView.image = image
         doneBarButton.isEnabled = false
+        datePicked = false
+        animalPicked = false
         petNameField.addTarget(self, action: #selector(editingChanged(_:)), for: .editingChanged)
+        
         
 
         // Uncomment the following line to preserve selection between presentations
@@ -49,6 +61,7 @@ class NewPetTableViewController: UITableViewController, UIImagePickerControllerD
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
+    // checks if the pet name field has been changed and if we can enable te done button - prevents blank pets from being created
     // - Attribution: http://stackoverflow.com/questions/34941069/enable-a-button-in-swift-only-if-all-text-fields-have-been-filled-out
     func editingChanged(_ textField: UITextField) {
         if textField.text?.characters.count == 1 {
@@ -57,8 +70,8 @@ class NewPetTableViewController: UITableViewController, UIImagePickerControllerD
                 return
             }
         }
-        guard
-            let petName = petNameField.text, !petName.isEmpty
+        // if the pet name is not empty, date is picked , animal is picked then an enable done button
+        guard let petName = petNameField.text, !petName.isEmpty, datePicked == true, animalPicked == true
             else {
                 doneBarButton.isEnabled = false
                 return
@@ -89,20 +102,30 @@ class NewPetTableViewController: UITableViewController, UIImagePickerControllerD
     
     
     
-    // takes date from date picker and sets the detail label as this date
+    // takes date from UIdatepicker and sets the detail label as this date
     // - Attribution: http://stackoverflow.com/questions/40484182/ios-swift-3-uidatepicker
     func datePickerChanged(_ sender: UIDatePicker) {
+        print("Date picker changed.")
         let components = Calendar.current.dateComponents([.year, .month, .day], from: sender.date)
         if let day = components.day, let month = components.month, let year = components.year {
-            dateDetailLabel.text = "\(day)/\(month)/\(year)"
+            dateDetailLabel.text = "\(month)/\(day)/\(year)"
            
+        }
+        datePicked = true
+        if (datePicked! && animalPicked! && !(petNameField.text?.isEmpty)!) {
+             doneBarButton.isEnabled = true
         }
     }
     
+    // when animal type is selected in AnimalPickerVC, it then stores it here in this VC
     @IBAction func unwindWithSelectedAnimal(segue:UIStoryboardSegue) {
         if let animalPickerTableViewController = segue.source as? AnimalPickerTableViewController, let selectedAnimal = animalPickerTableViewController.selectedAnimal {
             animal = selectedAnimal
-            print(animal)
+            animalPicked = true
+            // check if can enable done button
+            if (datePicked! && animalPicked! && !(petNameField.text?.isEmpty)!) {
+                doneBarButton.isEnabled = true
+            }
         }
     }
    
@@ -161,6 +184,7 @@ class NewPetTableViewController: UITableViewController, UIImagePickerControllerD
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "SavePetDetail" {
+            print("Done button tapped to save pet.")
             var anim: Pet.Animal
             if animal == "Dog" {
                 anim = Pet.Animal.Dog
@@ -171,14 +195,16 @@ class NewPetTableViewController: UITableViewController, UIImagePickerControllerD
             else {
                 anim = Pet.Animal.Other
             }
+            // creates new pet object to save and store in the YourPetsCVC
             pet = Pet(name: petNameField.text!, birthday: birthDatePicker.date as NSDate, animal: anim, microChipNumber: microChipField.text!, image: self.image)
             
             
         }
     }
     
+    // allows user to pick a photo using UIImagePickerController to upload an image of their pet; alertcontroller is presented first for user to pick between taking a new photo and choosing from their camera roll
     @IBAction func pickPhoto(_ sender: Any) {
-        
+        print("Pick photo button tapped.")
         let alertController = UIAlertController(title: nil, message: "Would you like to select an image from your Camera Roll or take a new photo with your camera?", preferredStyle: .actionSheet)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
@@ -235,14 +261,26 @@ class NewPetTableViewController: UITableViewController, UIImagePickerControllerD
         // - Attribution: http://stackoverflow.com/questions/39009889/xcode-8-creating-an-image-format-with-an-unknown-type-is-an-error
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
             let image = info[UIImagePickerControllerOriginalImage] as! UIImage!
-            self.image = image!
+            // set scale for resizing of the photo
+            let scale = (petImageView.bounds.width) / (image?.size.width)!
+            self.image = self.resize(image: image!, scale: scale)
             petImageView.image = self.image
-            //self.tableView.reloadData()
             dismiss(animated: true, completion: nil)
             
         }
-
-    }
     
+    // for resizing the uploaded photo
+    func resize(image: UIImage, scale: CGFloat) -> UIImage {
+        let size = image.size.applying(CGAffineTransform(scaleX: scale,y: scale))
+        let hasAlpha = true
+        let scale: CGFloat = 0.0
+        UIGraphicsBeginImageContextWithOptions(size, !hasAlpha, scale)
+        image.draw(in: CGRect(origin: CGPoint(x: 0, y: 0), size: size))
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return scaledImage!
+}
+
     
 
+}

@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let center = UNUserNotificationCenter.current()
+    let notificationDelegate = UYLNotificationDelegate()
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -22,9 +25,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        UINavigationBar.appearance().isOpaque = true
 //        UINavigationBar.appearance().is
 //        UINavigationBar.appearance().backgroundColor = UIColor(red:0.37, green:0.73, blue:0.37, alpha:1.0)
+        let options: UNAuthorizationOptions = [.alert, .sound];
+        center.requestAuthorization(options: options) {
+            (granted, error) in
+            if !granted {
+                print("Something went wrong")
+            }
+        }
+        center.delegate = notificationDelegate
         
+        registerSettingsBundle()
+        updateDisplayFromDefaults()
         return true
     }
+    
+    func registerSettingsBundle(){
+        let appDefaults = [String:AnyObject]()
+        UserDefaults.standard.register(defaults: appDefaults)
+    }
+    
+    func updateDisplayFromDefaults(){
+        //Get the defaults
+        let defaults = UserDefaults.standard
+        let developer = defaults.string(forKey: "developer")
+        if let developer = developer {
+            print(developer)
+        }
+        
+    }
+    
+   
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

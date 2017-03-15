@@ -6,6 +6,11 @@
 //  Copyright © 2017 Jahna Goldman. All rights reserved.
 //
 
+/* Custom Class Description:
+ 
+ A custom TableViewController for the user to pick the animal type when adding a new pet - segue from NewPetTableViewController leads to this page when the animal type cell is tapped
+ 
+ */
 import UIKit
 
 // To pick animal type for the Add a New Pet View Controller
@@ -54,6 +59,7 @@ class AnimalPickerTableViewController: UITableViewController {
 
         // Configure the cell...
         cell.textLabel?.text = animals[indexPath.row]
+        // selected animal has a checkmark, otherwise does not
         if indexPath.row == selectedAnimalIndex {
             cell.accessoryType = .checkmark
         }
@@ -67,7 +73,7 @@ class AnimalPickerTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        // other row is selected, need to deselect
+        // other row is selected, need to deselect - undo checkmark
         if let index = selectedAnimalIndex {
             let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0))
             cell?.accessoryType = .none
@@ -121,6 +127,7 @@ class AnimalPickerTableViewController: UITableViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "SaveSelectedAnimal" {
+            // pass data for picked animal type
             if let cell = sender as? UITableViewCell {
                 let indexPath = tableView.indexPath(for: cell)
                 if let index = indexPath?.row {

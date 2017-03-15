@@ -6,6 +6,13 @@
 //  Copyright © 2017 Jahna Goldman. All rights reserved.
 //
 
+
+/* Custom Class Description:
+ 
+ A custom CollectionViewController to display all pet profiles added by the user
+ 
+ */
+
 import UIKit
 
 private let reuseIdentifier = "petCell"
@@ -13,13 +20,12 @@ private let reuseIdentifier = "petCell"
 class YourPetsCollectionViewController: UICollectionViewController {
     
     var pets: [Pet] = [Pet]()
-
     // button to add a new pet, in nav bar
     @IBOutlet weak var newPetButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        pets.removeAll()
+        // load view with storerd pets in UserDefaults
         if let data = UserDefaults.standard.data(forKey:"pets"), let myPetList = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Pet] {
             myPetList.forEach({pets.append($0)})
        }
@@ -27,9 +33,6 @@ class YourPetsCollectionViewController: UICollectionViewController {
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-//        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
     }
@@ -46,22 +49,13 @@ class YourPetsCollectionViewController: UICollectionViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
-        
         if (segue.identifier == "detailSegue") {
             let secondVC = segue.destination as! PetDetailViewController
             let cell = sender as! YourPetViewCell
             let path = self.collectionView?.indexPath(for: cell)
+            // pass pet data to pet detail VC
             secondVC.pet = pets[(path?.row)!]
             secondVC.index = path?.row
-//            secondVC.petImageView.image = cell.petImageView.image
-//            var date: String
-//            let components = Calendar.current.dateComponents([.year, .month, .day], from: cell.pet?.birthday as! Date)
-//            if let day = components.day, let month = components.month, let year = components.year {
-//                date = "\(day)/\(month)/\(year)"
-//                
-//            }
-//            secondVC.petDescription.text = "Name: "cell.pet.name + " Animal: " + cell.pet.animal.rawValue +  " Birthday: " + date + " Microchip #: " + cell.pet.microChipNumber
-            
             
             
         }
@@ -85,37 +79,22 @@ class YourPetsCollectionViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! YourPetViewCell
         let thisPet = pets[indexPath.row]
        
-        // Configure the cell
+        // Configure the cell - set pet name and image
         cell.nameLabel.text = thisPet.name
         cell.petImageView.image = thisPet.image
-        
-        let cSelector = Selector("reset:")
-        let UpSwipe = UISwipeGestureRecognizer(target: self, action: cSelector)
-        UpSwipe.direction = UISwipeGestureRecognizerDirection.up
-        cell.addGestureRecognizer(UpSwipe)
-    
         return cell
     }
     
-    // - Attribution: http://stackoverflow.com/questions/29889353/swift-collectionview-remove-items-with-swipe-gesture
-    
-    func reset(sender: UISwipeGestureRecognizer) {
-        let cell = sender.view as! UICollectionViewCell
-        let i = collectionView?.indexPath(for: cell)!.item
-        pets.remove(at: i!)
-        let encodedData = NSKeyedArchiver.archivedData(withRootObject: pets)
-        UserDefaults.standard.set(encodedData, forKey: "pets")
-        self.collectionView?.reloadData()
-    }
-    
+    // if cancel button is clicked in a new view controller to navigate back to this VC without doing anything (e.g. when adding a new pet, but decide to cancel)
     @IBAction func cancelToPetsViewController(segue:UIStoryboardSegue) {
         
     }
     
+    // when adding a new pet in the NewPetTableViewController and the done button is clicked, this method saves the pet to UserDefaults using NSKeyedArchiver - inserts at start of array
     @IBAction func savePetDetail(segue:UIStoryboardSegue) {
         if let newPetViewController = segue.source as? NewPetTableViewController {
             if let pet = newPetViewController.pet {
-                pets.append(pet)
+                pets.insert(pet, at: 0)
                 let encodedData = NSKeyedArchiver.archivedData(withRootObject: pets)
                 UserDefaults.standard.set(encodedData, forKey: "pets")
                 collectionView?.reloadData()
@@ -123,9 +102,8 @@ class YourPetsCollectionViewController: UICollectionViewController {
         }
     }
     
+    // to delete the pet profile
     func didDismiss(withData: Int) {
-        print("Hello")
-        //do some funky stuff
         pets.remove(at: withData)
         print(withData)
         let encodedData = NSKeyedArchiver.archivedData(withRootObject: pets)
@@ -133,6 +111,7 @@ class YourPetsCollectionViewController: UICollectionViewController {
         collectionView?.reloadData()
     }
     
+    // to delete the pet profile and go back to list of pets from the detail page
     @IBAction func unwindToPetList(segue: UIStoryboardSegue) {
         let sourceVC = segue.source as! PetDetailViewController
         pets.remove(at: sourceVC.index!)

@@ -6,6 +6,12 @@
 //  Copyright © 2017 Jahna Goldman. All rights reserved.
 //
 
+/* Custom Class Description:
+ 
+ A custom TableViewController for the user to pick the associated pet profile when adding a new pet activity - segue from NewActivityTableViewController leads to this page when the pet name cell is tapped
+ 
+ */
+
 import UIKit
 
 class PetPickerTableViewController: UITableViewController {
@@ -33,6 +39,7 @@ class PetPickerTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         if let data = UserDefaults.standard.data(forKey:"pets"), let myPetList = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Pet] {
+            // populate pet list with pet profiles the user has added
             myPetList.forEach({pets.append($0.name)})
         }
         
@@ -61,6 +68,7 @@ class PetPickerTableViewController: UITableViewController {
 
         // Configure the cell...
         cell.textLabel?.text = pets[indexPath.row]
+        // if selected, has checkmark, otherwise no
         if indexPath.row == selectedPetIndex {
             cell.accessoryType = .checkmark
         }
@@ -128,6 +136,7 @@ class PetPickerTableViewController: UITableViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "SaveSelectedPet" {
+            // pass selected pet back
             if let cell = sender as? UITableViewCell {
                 let indexPath = tableView.indexPath(for: cell)
                 if let index = indexPath?.row {

@@ -22,6 +22,12 @@
 		42470A0C1E7358730034CE59 /* ActivityPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42470A0B1E7358730034CE59 /* ActivityPickerTableViewController.swift */; };
 		42470A0E1E737A1E0034CE59 /* PetPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42470A0D1E737A1E0034CE59 /* PetPickerTableViewController.swift */; };
 		42470A101E746D6E0034CE59 /* PetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42470A0F1E746D6E0034CE59 /* PetDetailViewController.swift */; };
+		425230AC1E752CCC00ABBC6E /* ActivityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425230AB1E752CCC00ABBC6E /* ActivityDetailViewController.swift */; };
+		425230AE1E764CB300ABBC6E /* SplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425230AD1E764CB300ABBC6E /* SplashScreenViewController.swift */; };
+		425230B21E7661C300ABBC6E /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425230B11E7661C300ABBC6E /* InfoViewController.swift */; };
+		425230B41E76781000ABBC6E /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425230B31E76781000ABBC6E /* NotificationViewController.swift */; };
+		425230BA1E7696C000ABBC6E /* UYLNotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425230B91E7696C000ABBC6E /* UYLNotificationDelegate.swift */; };
+		425230BC1E77119500ABBC6E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 425230BB1E77119500ABBC6E /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +48,12 @@
 		42470A0B1E7358730034CE59 /* ActivityPickerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityPickerTableViewController.swift; sourceTree = "<group>"; };
 		42470A0D1E737A1E0034CE59 /* PetPickerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetPickerTableViewController.swift; sourceTree = "<group>"; };
 		42470A0F1E746D6E0034CE59 /* PetDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetDetailViewController.swift; sourceTree = "<group>"; };
+		425230AB1E752CCC00ABBC6E /* ActivityDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityDetailViewController.swift; sourceTree = "<group>"; };
+		425230AD1E764CB300ABBC6E /* SplashScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreenViewController.swift; sourceTree = "<group>"; };
+		425230B11E7661C300ABBC6E /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		425230B31E76781000ABBC6E /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		425230B91E7696C000ABBC6E /* UYLNotificationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UYLNotificationDelegate.swift; sourceTree = "<group>"; };
+		425230BB1E77119500ABBC6E /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +102,12 @@
 				42470A0B1E7358730034CE59 /* ActivityPickerTableViewController.swift */,
 				42470A0D1E737A1E0034CE59 /* PetPickerTableViewController.swift */,
 				42470A0F1E746D6E0034CE59 /* PetDetailViewController.swift */,
+				425230AB1E752CCC00ABBC6E /* ActivityDetailViewController.swift */,
+				425230AD1E764CB300ABBC6E /* SplashScreenViewController.swift */,
+				425230B11E7661C300ABBC6E /* InfoViewController.swift */,
+				425230B31E76781000ABBC6E /* NotificationViewController.swift */,
+				425230B91E7696C000ABBC6E /* UYLNotificationDelegate.swift */,
+				425230BB1E77119500ABBC6E /* Settings.bundle */,
 			);
 			path = LucyPet;
 			sourceTree = "<group>";
@@ -126,6 +144,7 @@
 				TargetAttributes = {
 					424709D91E6F1DCC0034CE59 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = TLD4U34KG7;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -153,6 +172,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				425230BC1E77119500ABBC6E /* Settings.bundle in Resources */,
 				424709EA1E6F1DCD0034CE59 /* LaunchScreen.storyboard in Resources */,
 				424709E71E6F1DCD0034CE59 /* Assets.xcassets in Resources */,
 				424709E51E6F1DCD0034CE59 /* Main.storyboard in Resources */,
@@ -168,7 +188,10 @@
 			files = (
 				42470A0C1E7358730034CE59 /* ActivityPickerTableViewController.swift in Sources */,
 				42470A001E6F650F0034CE59 /* NewPetTableViewController.swift in Sources */,
+				425230B41E76781000ABBC6E /* NotificationViewController.swift in Sources */,
+				425230AE1E764CB300ABBC6E /* SplashScreenViewController.swift in Sources */,
 				424709FE1E6F55B40034CE59 /* Pet.swift in Sources */,
+				425230B21E7661C300ABBC6E /* InfoViewController.swift in Sources */,
 				42470A101E746D6E0034CE59 /* PetDetailViewController.swift in Sources */,
 				424709DE1E6F1DCD0034CE59 /* AppDelegate.swift in Sources */,
 				42470A081E71FF670034CE59 /* YourPetViewCell.swift in Sources */,
@@ -176,6 +199,8 @@
 				42470A021E71E97E0034CE59 /* AnimalPickerTableViewController.swift in Sources */,
 				42470A0A1E73476B0034CE59 /* Activity.swift in Sources */,
 				42470A0E1E737A1E0034CE59 /* PetPickerTableViewController.swift in Sources */,
+				425230BA1E7696C000ABBC6E /* UYLNotificationDelegate.swift in Sources */,
+				425230AC1E752CCC00ABBC6E /* ActivityDetailViewController.swift in Sources */,
 				424709F21E6F28F20034CE59 /* ActivityTableViewController.swift in Sources */,
 				424709FA1E6F42840034CE59 /* YourPetsCollectionViewController.swift in Sources */,
 			);
@@ -300,6 +325,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = TLD4U34KG7;
 				INFOPLIST_FILE = LucyPet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.uchicago.jagoldman.LucyPet;
@@ -312,6 +338,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = TLD4U34KG7;
 				INFOPLIST_FILE = LucyPet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.uchicago.jagoldman.LucyPet;
@@ -339,6 +366,7 @@
 				424709F01E6F1DCD0034CE59 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -6,13 +6,14 @@
 //  Copyright © 2017 Jahna Goldman. All rights reserved.
 //
 
-import UIKit
 
-//protocol TableViewControllerDismissDelegate {
-//    func didDismiss(withData: Int)
-//}
-//
-//   var delegate: YourPetsCollectionViewController! = nil
+/* Custom Class Description:
+ 
+ A custom UIViewController that presents when the user taps on a pet profile in the YourPetsCollectionViewController - presents more detail about the pet, as well as option to delete the pet
+ 
+ */
+
+import UIKit
 
 class PetDetailViewController: UIViewController {
     @IBOutlet weak var petDescription: UITextView!
@@ -45,7 +46,10 @@ class PetDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // if the delete button (trash can) is pressed, bring up alert controller to confirm the choice
+    // if user clicks OK, then unwind back to petlist and delete pet
     @IBAction func deletePressed(_ sender: Any) {
+        print("Delete button tapped.")
         let alertController = UIAlertController(title: "Delete This Pet?", message: "Choose an option.", preferredStyle: .alert)
         
         let cancelAction = UIAlertAction(title: "No", style: .cancel) { (action:UIAlertAction!) in
@@ -56,9 +60,6 @@ class PetDetailViewController: UIViewController {
         let OKAction = UIAlertAction(title: "Yes", style: .default) { (action:UIAlertAction!) in
             print("You have pressed Yes to delete the pet.")
             self.performSegue(withIdentifier: "unwindToPetList", sender: self)
-//            self.navigationController?.popViewController(animated: true)
-//            delegate?.didDismiss(withData: self.index!)
-            
         }
         alertController.addAction(OKAction)
         
